@@ -2,29 +2,29 @@
 
 ## Lab
 
-Azure Lab 4: Ubuntu VM and Nginx Validation
+Azure Lab 4: Azure Linux VM, SSH, and Nginx Validation
 
 ## Goal
 
-Deploy an Ubuntu VM into an existing Azure network, administer it over SSH, install Nginx, correct the web port exposure in the NSG, and verify public web access.
+Deploy a Linux VM into the existing Azure lab network, connect over SSH with key-based authentication, install Nginx, correct the NSG web rule, and validate public HTTP access.
 
 ## Skills Demonstrated
 
-- Azure VM deployment
-- SSH key generation and Linux administration
-- Reuse of existing VNet and subnet design
-- NSG rule management for application access
-- Port-based troubleshooting between service configuration and cloud firewall rules
-- Basic web-service validation with Nginx
+- Azure VM deployment into an existing VNet and subnet design
+- SSH key generation and Linux remote administration
+- Reuse of earlier network security foundations
+- NSG rule management for application exposure
+- Port-based troubleshooting between service configuration and firewall rules
 
 ## Final State
 
 - `vm-lab-01` deployed in `rg-azure-lab-network`
 - VM attached to `vnet-lab-network` / `public-subnet`
-- Nginx installed successfully
+- SSH key authentication used successfully
+- Nginx installed and running
 - NSG corrected from an initial wrong web port to inbound HTTP on TCP `80`
 - Browser reached the default Nginx landing page
 
 ## Portfolio Value
 
-This lab shows a practical end-to-end path from Azure infrastructure deployment to live service validation, rather than stopping at resource creation alone.
+This lab shows a practical end-to-end path from Azure infrastructure deployment to live service validation. It ties compute, networking, security, and Linux administration together in a way that is stronger than a VM-creation-only project.
