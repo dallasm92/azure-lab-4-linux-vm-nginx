@@ -1,8 +1,8 @@
-# Azure Lab 4: Ubuntu VM and Nginx Validation
+# Azure Lab 4: Azure Linux VM, SSH, and Nginx Validation
 
 ## Objective
 
-Deploy a Linux virtual machine in Azure, reuse the earlier network foundation, connect over SSH, install Nginx, open the required inbound web port in the network security group, and confirm HTTP access from a browser.
+Deploy a Linux virtual machine in Azure, place it in the existing lab network, connect over SSH with key-based authentication, install Nginx, correct an NSG port mistake, and confirm HTTP access from a browser.
 
 ## Environment
 
@@ -19,6 +19,7 @@ Deploy a Linux virtual machine in Azure, reuse the earlier network foundation, c
 - Network Interface
 - Public IP address
 - Network Security Group
+- SSH key-based remote administration
 
 ## Resource Details
 
@@ -30,31 +31,36 @@ Deploy a Linux virtual machine in Azure, reuse the earlier network foundation, c
 - Public IP resource: `vm-lab-01-ip`
 - Guest OS family: Ubuntu Server 24.04 LTS
 - Web service installed for validation: Nginx
+- Authentication method: SSH public key
 
 ## Lab Relationship
 
-This lab builds on the earlier Azure network foundation rather than starting from scratch. The VM was attached to the existing VNet and public subnet, and the NSG from the network lab was updated to allow web traffic for validation.
+This lab builds directly on the earlier Azure network foundation rather than starting from scratch. The final VM deployment reused `vnet-lab-network`, placed the VM in `public-subnet`, relied on the subnet-level NSG from the networking lab, and then extended that NSG for web validation.
 
 ## Steps Performed
 
 1. Opened the Azure virtual machine creation workflow.
-2. Selected an Ubuntu Server 24.04 LTS image for the VM deployment.
-3. Created a new SSH key pair as part of the Azure deployment flow.
-4. Deployed the VM into `rg-azure-lab-network`.
-5. Attached the VM to the existing `vnet-lab-network` and `public-subnet`.
-6. Confirmed Azure created the VM, network interface, and public IP resources.
-7. Connected to the VM over SSH.
-8. Installed Nginx on the Ubuntu VM.
-9. Reviewed the existing NSG attached to `public-subnet`.
-10. Added an inbound rule to allow HTTP traffic on TCP port `80`.
-11. Confirmed the VM network settings and NSG relationship.
-12. Validated the public web response by reaching the default Nginx page from a browser.
+2. Corrected the VM wizard so the deployment reused the existing `vnet-lab-network` instead of creating a new VNet automatically.
+3. Selected `public-subnet` intentionally so the VM would sit behind the subnet-level NSG that already restricted SSH access.
+4. Selected an Ubuntu Server 24.04 LTS image for the VM deployment.
+5. Created a new SSH key pair as part of the Azure deployment flow and used SSH key authentication instead of password login.
+6. Deployed the VM into `rg-azure-lab-network`.
+7. Confirmed Azure created the VM, network interface, and public IP resources.
+8. Connected to the VM over SSH.
+9. Installed Nginx on the Ubuntu VM.
+10. Confirmed the service was running on the VM.
+11. Reviewed the existing NSG attached to `public-subnet`.
+12. Initially added an inbound rule for the wrong port (`8080`) while Nginx was listening on the standard HTTP port.
+13. Corrected the NSG by allowing inbound TCP `80`.
+14. Confirmed the VM network settings and NSG relationship.
+15. Validated the public web response by reaching the default Nginx page from a browser.
 
 ## Validation
 
 - SSH access to the Linux VM succeeded.
 - `sudo apt install nginx -y` completed successfully on the VM.
-- The NSG attached to `public-subnet` was updated to allow inbound HTTP.
+- The VM remained attached to `public-subnet` in `vnet-lab-network`.
+- The subnet-level NSG was first tested with the wrong web port and then corrected to allow inbound HTTP on TCP `80`.
 - A browser request to the VM public IP returned the default `Welcome to nginx!` page.
 
 ## What I Learned
@@ -62,19 +68,22 @@ This lab builds on the earlier Azure network foundation rather than starting fro
 - Azure VM deployment becomes easier once the network foundation already exists and can be reused cleanly.
 - Subnet-level NSG design makes it straightforward to add workload-specific access later without rebuilding the network.
 - A simple HTTP validation is a fast way to prove that the compute, networking, and security layers are working together.
+- Service status alone is not enough; the exposed port and the NSG rule have to match the application actually listening on the VM.
 - Reusing a prior lab's VNet and NSG turns separate Azure exercises into a more realistic sequence instead of isolated portal clicks.
 
 ## Problems Encountered / Notes
 
 - The private evidence set includes account-banner details and public-IP exposure, so the raw screenshots were not copied directly into this public repo.
 - The NSG already contained SSH-focused rules from the earlier network lab, and this lab added web access for application validation.
-- One part of the evidence shows experimentation with a custom inbound web port before the final HTTP validation path; the final public validation captured here is the successful Nginx response over standard HTTP.
+- The first HTTP rule used the wrong destination port (`8080`). The final working path used TCP `80`, which matched the Nginx default listener and resolved the connectivity issue.
+- Earlier VM wizard attempts drifted away from the intended network design by trying to create a new VNet or place the VM in the wrong subnet. The final lab state documented here uses the existing `vnet-lab-network` and `public-subnet`.
 
 ## Cost Control and Cleanup
 
 - This lab used a single Linux VM and reused the earlier network foundation.
 - No load balancer, Application Gateway, or multi-VM design was introduced.
 - Cleanup state is not claimed here because the private evidence set does not prove final deletion of every resource.
+- The original chat workflow explicitly called out stopping or deallocating the VM when not in use to avoid unnecessary compute charges.
 
 ## Repo Structure
 
@@ -87,4 +96,4 @@ This lab builds on the earlier Azure network foundation rather than starting fro
 
 ## Outcome
 
-The lab produced a working Azure Linux VM deployment with SSH administration, an Nginx installation, and successful inbound HTTP validation through the existing network and NSG design.
+The lab produced a working Azure Linux VM deployment with SSH administration, an Nginx installation, a corrected NSG web rule, and successful inbound HTTP validation through the existing network and subnet-level security design.
