@@ -97,3 +97,8 @@ This lab builds directly on the earlier Azure network foundation rather than sta
 ## Outcome
 
 The lab produced a working Azure Linux VM deployment with SSH administration, an Nginx installation, a corrected NSG web rule, and successful inbound HTTP validation through the existing network and subnet-level security design.
+
+## Repository Notes
+
+- This repo extends the Azure networking lab rather than replacing it.
+- The detailed reason the screenshot set remains private is documented in [EVIDENCE_NOTES.md](EVIDENCE_NOTES.md).
