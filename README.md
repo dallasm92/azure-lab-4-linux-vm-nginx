@@ -37,6 +37,16 @@ Deploy a Linux virtual machine in Azure, place it in the existing lab network, c
 
 This lab builds directly on the earlier Azure network foundation rather than starting from scratch. The final VM deployment reused `vnet-lab-network`, placed the VM in `public-subnet`, relied on the subnet-level NSG from the networking lab, and then extended that NSG for web validation.
 
+## Hiring Manager Quick View
+
+| Review area | Evidence |
+|---|---|
+| Linux administration | SSH key access to Ubuntu Server 24.04 LTS and Nginx installation |
+| Azure workload deployment | VM, NIC, public IP, VNet, subnet, and NSG relationship documented |
+| Troubleshooting | Incorrect web rule on TCP `8080` corrected to Nginx's default TCP `80` listener |
+| Validation | SSH succeeded, Nginx service was running, browser reached the default Nginx page |
+| Security handling | Raw screenshots stay private because they include account banner and public-IP context |
+
 ## Steps Performed
 
 1. Opened the Azure virtual machine creation workflow.
@@ -93,6 +103,10 @@ This lab builds directly on the earlier Azure network foundation rather than sta
   - short version for quick portfolio review
 - `EVIDENCE_NOTES.md`
   - explains why the screenshot set is currently kept private
+
+## Evidence Approach
+
+The public repo keeps the workflow reviewable through the written build sequence, validation notes, and troubleshooting summary. The screenshot set remains private because it contains account banner details and public-IP exposure that are not useful to publish. This keeps the repo public-safe without pretending the screenshots do not exist.
 
 ## Outcome
 
