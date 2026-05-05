@@ -1,5 +1,8 @@
 # Azure Lab 4: Azure Linux VM, SSH, and Nginx Validation
 
+Social preview asset:
+- [assets/social-preview.png](assets/social-preview.png)
+
 ## Objective
 
 Deploy a Linux virtual machine in Azure, place it in the existing lab network, connect over SSH with key-based authentication, install Nginx, correct an NSG port mistake, and confirm HTTP access from a browser.
